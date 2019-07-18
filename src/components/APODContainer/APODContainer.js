@@ -1,28 +1,29 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
 export default function APODContainer() {
+  const newDate = new Date(),
+    today = newDate.getFullYear() + '-' + (newDate.getMonth() + 1) + '-' + newDate.getDate();
+
+  console.log(`Today's Date: ${today}`);
 
   const [data, setData] = useState({});
-  const [date, setDate] = useState('2019-01-01');
+  const [date] = useState(today);
 
+  useEffect(() => {
+    axios.get(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${date}`)
+      .then(res => {
+        const data = res.data;
+        setData(data);
+      });
+  }, [date]); // Using the {date} state as a dependency to syncronize my useEffect
 
-
-    useEffect(() => {
-        axios.get(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${date}`)
-        .then(res => {
-          const data = res.data;
-          setData(data);
-        });
-    }, [date]);
-
-    return (
-      <div>
-        <h2>{data.title}</h2>
-        {/* <p className='nasa-date'>{data.date}</p> */}
-        <img alt='NASA APOD'src={data.url} style={{ maxWidth: "385px" }} />
-        <p>{data.explanation}</p>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h2>{data.title}</h2>
+      <img alt='NASA APOD' src={data.url} style={{ maxWidth: "370px" }} />
+      <p>{data.explanation}</p>
+    </div>
+  );
+}
