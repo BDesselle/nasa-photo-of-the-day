@@ -7,13 +7,9 @@ import Navigation from './components/Navigation/Navigation';
 function App() {
   return (
     <div className="App">
-      <div>
-        <Header />
-        <Navigation />
-      </div>
-      <div>
-        <APODContainer />
-      </div>
+      <Header />
+      <Navigation />
+      <APODContainer />
     </div>
   );
 }
